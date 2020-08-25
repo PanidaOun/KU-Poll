@@ -1,2 +1,7 @@
-# KU-Poll
+# Kasetsart Polls
 Web application for conducting online polls and surveys.
+
+## Project Documents
+
+[Vision Statement](../../wiki/Vision%20Statement)
+[requirement](../../wiki/Requirement)
