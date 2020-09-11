@@ -11,4 +11,4 @@ Iterations
 * [Iteration 1 Plan](../../wiki/Iteration%201%20Plan) and [Task Board](../../projects/1)
 
 ## Licensing
-Contact @panida to license.
+Contact @PanidaOun to license.
