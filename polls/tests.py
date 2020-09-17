@@ -9,6 +9,7 @@ from .models import Question
 
 class QuestionModelTests(TestCase):
 
+
     def test_was_published_recently_with_future_question(self):
         """
         was_published_recently() returns False for questions whose pub_date
@@ -36,6 +37,60 @@ class QuestionModelTests(TestCase):
         recent_question = Question(pub_date=time)
         self.assertIs(recent_question.was_published_recently(), True)
 
+    def test_is_published_current_date_after_pub_date(self):
+        """
+          is_published() returns True if current date is after question’s publication date
+        """
+        time = timezone.now()- datetime.timedelta(days=1)
+        before = Question(pub_date = time )
+        self.assertIs(before.is_published(), True)
+
+    def test_is_published_current_date_on_pub_date(self):
+        """
+          is_published() returns True if current date is on question’s publication date
+        """
+        time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
+        now = Question(pub_date = time )
+        self.assertIs(now.is_published(), True)
+    
+    def test_is_published_current_date_before_pub_date(self):
+        """
+          is_published() returns False if current date is before question’s publication date
+        """
+        time = timezone.now() + datetime.timedelta(days=30)
+        after = Question(pub_date=time)
+        self.assertIs(after.is_published(), False)
+
+    def test_can_vote_before_end_date(self):
+        """
+        can_vote returns True if current date is after pub_date and before end_date
+        """
+        pub_time = timezone.now() - datetime.timedelta(days=3)
+        end_time = pub_time + datetime.timedelta(days=5)
+        question = Question(pub_date = pub_time, end_date = end_time)
+        self.assertIs(question.can_vote(), True)
+
+    def test_can_vote_after_end_date(self):
+        """
+        can_vote returns False if current date is after end_date
+        """
+        pub_time = timezone.now() - datetime.timedelta(days=10)
+        end_time = pub_time + datetime.timedelta(days=5)
+        question = Question(pub_date = pub_time, end_date = end_time)
+        self.assertIs(question.can_vote(), False)
+
+
+    
+    def test_can_vote_with_future_question(self):
+        """
+        can_vote() return False for questions whose pub_date is in the future.
+        """
+        pub_time = timezone.now() + datetime.timedelta(days=10)
+        end_time = pub_time + datetime.timedelta(days=10)
+        question = Question(pub_date = pub_time, end_date = end_time)
+        self.assertIs(question.can_vote(), False)
+
+    
 def create_question(question_text, days):
     """
     Create a question with the given question_text and published the
@@ -43,7 +98,8 @@ def create_question(question_text, days):
     in the past, positive for questions that have yet to be published).
     """
     time = timezone.now() + datetime.timedelta(days=days)
-    return Question.objects.create(question_text=question_text, pub_date=time)
+    end_time = timezone.now() + datetime.timedelta(days=30)
+    return Question.objects.create(question_text=question_text, pub_date=time,end_date = end_time)
 
 class QuestionIndexViewTests(TestCase):
     def test_no_questions(self):
