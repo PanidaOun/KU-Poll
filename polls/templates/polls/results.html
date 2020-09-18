@@ -2,7 +2,35 @@
 
 <ul>
 {% for choice in question.choice_set.all %}
-    <li>{{ choice.choice_text }} -- {{ choice.votes }} vote{{ choice.votes|pluralize }}</li>
+<html>
+    <head>
+        <style>
+        /* Set additional styling options for the columns*/
+        .column {
+        float: left;
+        width: 50%;
+        }
+    
+        .row:after {
+        content: "";
+        display: table;
+        clear: both;
+        }
+        </style>
+     </head>
+    <body>
+       <div class="row">
+           
+           <div class="column left" style="background-color:#FFB695;">
+               <br><a>{{ choice.choice_text }}</a><br>
+           </div>
+           <div class="column right" style="background-color:#96D1CD;">
+               
+               <br><a>{{ choice.votes }}  </a><br>
+           </div>
+       </div>
+    </body>
+   </html>
 {% endfor %}
 </ul>
 
