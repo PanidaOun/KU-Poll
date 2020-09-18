@@ -1,5 +1,11 @@
 li a {
-    color: green;
+    background-color: rgb(248, 221, 237);
+    font-size-adjust: inherit;
+    font-size: x-large;
+    font-style: oblique;
+    color: rgb(170, 16, 67);
+
+    
 }
 body {
     background: white url("images/background.gif") ;
