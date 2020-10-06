@@ -15,5 +15,3 @@ Iterations
 
 ## Licensing
 Contact @PanidaOun to license.
-
-python3 manage.py test todo
