@@ -5,7 +5,7 @@ python: "3.7"
 
 # don't clone more than necessary
 git:
-  depth: 150
+  depth: 1
 
 # Install any dependencies
 install:
@@ -14,7 +14,7 @@ install:
 before_script:
   - cp .env.example .env
   - python manage.py migrate
-  
+
 # script to run tests. Script can have many commands, one per line.
 script: 
   - coverage run manage.py test polls
