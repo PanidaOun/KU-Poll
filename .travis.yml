@@ -5,7 +5,7 @@ python: "3.7"
 
 # don't clone more than necessary
 git:
-  depth: 1
+  depth: 150
 
 # Install any dependencies
 install:
