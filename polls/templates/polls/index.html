@@ -2,11 +2,12 @@
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
 {% if user.is_authenticated %}
-  <h2> Welcome to KU POLLS, {{ user}}</h2>
-  <a href="{% url 'logout' %}">Click here To Logout!</a>
+  <h2 style="color:rgb(199, 100, 219);font-style: oblique; "> Welcome to KU POLLS ,  {{ user}}</h2>
+  <a href="{% url 'logout' %}"> <button class="Vote_button" style="background-color:rgb(252, 136, 136);color:rgb(143, 0, 0);">Logout!</button> </a>
 {% else %}
-  <h2> Welcome to KU POLLS</h2>
-  You can view only the result   <button><a href="{% url 'login' %}">Login here</a> </button>
+  <h2 style="color:rgb(199, 100, 219);font-style: oblique; "> Welcome to KU POLLS</h2>
+  <p style=" color:rgb(111, 119, 233);font-style: oblique; font-size:20px;">You can view only the result.If you want to vote, please log in.</p>  
+  <a href="{% url 'login' %}"> <button class="Vote_button" style="background-color:rgb(177, 248, 175);color:rgb(1, 94, 37);">Login here!</button> </a>
 {% endif %}
 {% if messages %}
 <ul class="messages">
@@ -20,8 +21,8 @@
     <ul>
     {% for question in latest_question_list %}
         <li><a href="{% url 'polls:detail' question.id %}">{{ question.question_text }}</a></li>
-        <br> <a href="{% url 'polls:detail' question.id %}"> <button class="Vote_button" {% if not question.can_vote %} disabled {% endif %} >Vote</button> </a>
-        <button><a href="{% url 'polls:results' question.id %}">Result</a></button>
+        <br> <a href="{% url 'polls:detail' question.id %}"> <button class="Vote_button" {% if not question.can_vote %} disabled {% endif %} style="background-color:rgb(219, 171, 238);color:rgb(73, 1, 114);">Vote</button> </a>
+        <a href="{% url 'polls:results' question.id %}"> <button class="Vote_button" style="background-color:pink;color:rgb(161, 0, 54);">Result</button> </a>
         <!-- <a class="btn btn-primary" href="{% url 'polls:detail' question.id %}">Vote</a>
         <a class="btn btn-primary" href="{% url 'polls:detail' question.id %}">Result</a> -->
     {% endfor %}

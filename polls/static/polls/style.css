@@ -10,3 +10,10 @@ li a {
 body {
     background: white url("images/background.gif") ;
 }
+h2 {
+    background-color: rgb(248, 221, 237);
+    font-size-adjust: inherit;
+    font-size: x-large;
+    font-style: oblique;
+    color: rgb(170, 16, 67);
+}
