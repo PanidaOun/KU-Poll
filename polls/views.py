@@ -7,6 +7,8 @@ from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from .models import Choice, Question
 from django.contrib import messages
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import authenticate, login
 
 
 class IndexView(generic.ListView):
@@ -66,3 +68,4 @@ def vote(request, question_id):
         # with POST data. This prevents data from being posted twice if a
         # user hits the Back button.
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
+
