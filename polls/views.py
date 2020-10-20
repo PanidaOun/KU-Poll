@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-
+from django.contrib.auth.decorators import login_required
 from .models import Choice, Question
 from django.contrib import messages
 
@@ -20,7 +20,6 @@ class IndexView(generic.ListView):
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')
-
 
 def view_vote(request, question_id):
     """Return to index page if user cannot vote the question but if user can vote ,go to detail page."""
@@ -48,7 +47,7 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
-
+@login_required
 def vote(request, question_id):
     """Def about vote and go to result page."""
     question = get_object_or_404(Question, pk=question_id)

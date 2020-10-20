@@ -1,7 +1,13 @@
 {% load static %}
 
 <link rel="stylesheet" type="text/css" href="{% static 'polls/style.css' %}">
-
+{% if user.is_authenticated %}
+  <h2> Welcome to KU POLLS, {{ user.first_name }} {{ user.last_name }}</h2>
+  <a href="{% url 'logout' %}">Click here To Logout!</a>
+{% else %}
+  <h2> Welcome to KU POLLS</h2>
+  You can view only the result  <a href="{% url 'login' %}">Login here</a>
+{% endif %}
 {% if messages %}
 <ul class="messages">
   {% for msg in messages %}

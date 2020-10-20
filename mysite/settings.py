@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
 ]
 
 MIDDLEWARE = [
@@ -118,3 +119,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+AUTHENTICATION_BACKENDS = (
+     # username/password authentication
+    'django.contrib.auth.backends.ModelBackend',  
+ )
+LOGIN_REDIRECT_URL = '/polls/'
+LOGOUT_REDIRECT_URL = '/polls/'
