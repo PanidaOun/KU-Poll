@@ -33,15 +33,15 @@ def get_client_ip(request):
     return ip
 
 @receiver(user_logged_in)
-def user_logged_in_logging(sender, request, user, **kwargs):
+def logging_log_in(sender, request, user, **kwargs):
     logger.info(f"{user.username} is login to KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
 
 @receiver(user_logged_out)
-def user_logged_out_logging(sender, request, user, **kwargs):
+def logging_logged_out(sender, request, user, **kwargs):
     logger.info(f"{user.username} is logout from KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
 
 @receiver(user_login_failed)
-def user_failed_logged_in_logging(sender, request, credentials, **kwargs):
+def logging_failed_logged_in(sender, request, credentials, **kwargs):
     logger.warning(f"{request.POST['username']} failed to login to KU POLL, {request.POST['username']}'s IP address is {get_client_ip(request)}")
 
 class IndexView(generic.ListView):
