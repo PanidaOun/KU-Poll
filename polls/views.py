@@ -21,7 +21,7 @@ from .settings import LOGGING
 
 
 logging.config.dictConfig(LOGGING)
-logger = logging.getLogger("polls")
+loggings = logging.getLogger("polls")
 
 def get_client_ip(request):
     """ Get the client's ip"""
@@ -34,15 +34,15 @@ def get_client_ip(request):
 
 @receiver(user_logged_in)
 def logging_log_in(sender, request, user, **kwargs):
-    logger.info(f"{user.username} is login to KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
+    loggings.info(f"{user.username} is login to KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
 
 @receiver(user_logged_out)
 def logging_logged_out(sender, request, user, **kwargs):
-    logger.info(f"{user.username} is logout from KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
+    loggings.info(f"{user.username} is logout from KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
 
 @receiver(user_login_failed)
 def logging_failed_logged_in(sender, request, credentials, **kwargs):
-    logger.warning(f"{request.POST['username']} failed to login to KU POLL, {request.POST['username']}'s IP address is {get_client_ip(request)}")
+    loggings.warning(f"{request.POST['username']} failed to login to KU POLL, {request.POST['username']}'s IP address is {get_client_ip(request)}")
 
 class IndexView(generic.ListView):
     """Class to view a index page."""
@@ -97,6 +97,6 @@ def vote(request, question_id):
         for choice in question.choice_set.all():
             choice.votes = Vote.objects.filter(question=question).filter(choice=choice).count()
             choice.save()
-        logger.info(f"{user.username} is voting in question id {question_id}, {user.username}'s IP address is {get_client_ip(request)}")    
+        loggings.info(f"{user.username} is voting in question id {question_id}, {user.username}'s IP address is {get_client_ip(request)}")    
 
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
