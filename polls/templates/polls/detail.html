@@ -2,6 +2,9 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+{% if previous_vote %}
+    <p> Your last vote is : {{ previous_vote_text }} </p>
+{% endif %}
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 {% for choice in question.choice_set.all %}

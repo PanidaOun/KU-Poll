@@ -3,11 +3,12 @@ import datetime
 
 from django.db import models
 from django.utils import timezone
+from django.contrib.auth.models import User
 
 
 class Question(models.Model):
     """Class that has a question and a publication date."""
-
+    previous_vote = models.CharField(max_length=200, default="")
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
     end_date = models.DateTimeField('Ending date')
@@ -49,3 +50,9 @@ class Choice(models.Model):
     def __str__(self):
         """Def to return a choice text."""
         return self.choice_text
+
+class Vote(models.Model):
+
+    question = models.ForeignKey(Question, on_delete=models.CASCADE)
+    choice = models.ForeignKey(Choice, on_delete=models.CASCADE)
+    user = models.ForeignKey(User,null=True,blank=True,on_delete=models.CASCADE)
