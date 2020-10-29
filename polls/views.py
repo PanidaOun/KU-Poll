@@ -11,6 +11,38 @@ from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth import authenticate, login
 from polls.models import Vote
 
+import logging
+from django.contrib.auth.signals import user_logged_in, user_logged_out, user_login_failed
+from django.dispatch import receiver
+import logging.config
+
+from .settings import LOGGING
+
+
+
+logging.config.dictConfig(LOGGING)
+logger = logging.getLogger("polls")
+
+def get_client_ip(request):
+    """ Get the client's ip"""
+    x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
+    if x_forwarded_for:
+        ip = x_forwarded_for.split(',')[0]
+    else:
+        ip = request.META.get('REMOTE_ADDR')
+    return ip
+
+@receiver(user_logged_in)
+def user_logged_in_logging(sender, request, user, **kwargs):
+    logger.info(f"{user.username} is login to KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
+
+@receiver(user_logged_out)
+def user_logged_out_logging(sender, request, user, **kwargs):
+    logger.info(f"{user.username} is logout from KU POLL, {user.username}'s IP address is {get_client_ip(request)}")
+
+@receiver(user_login_failed)
+def user_failed_logged_in_logging(sender, request, credentials, **kwargs):
+    logger.warning(f"{request.POST['username']} failed to login to KU POLL, {request.POST['username']}'s IP address is {get_client_ip(request)}")
 
 class IndexView(generic.ListView):
     """Class to view a index page."""
@@ -40,6 +72,7 @@ def view_vote(request, question_id):
     return render(request, 'polls/detail.html', {'question': question})
 
 
+
 class ResultsView(generic.DetailView):
     """Class to view a result page."""
 
@@ -49,7 +82,7 @@ class ResultsView(generic.DetailView):
 @login_required
 def vote(request, question_id):
     """Def about vote and go to result page."""
-    # user = request.user
+    user = request.user
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])
@@ -60,9 +93,10 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-        Vote.objects.update_or_create(user = request.user, question=question, defaults={'choice': selected_choice})
+        Vote.objects.update_or_create(user = user, question=question, defaults={'choice': selected_choice})
         for choice in question.choice_set.all():
             choice.votes = Vote.objects.filter(question=question).filter(choice=choice).count()
             choice.save()
+        logger.info(f"{user.username} is voting in question id {question_id}, {user.username}'s IP address is {get_client_ip(request)}")    
 
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
