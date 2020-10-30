@@ -94,9 +94,7 @@ def vote(request, question_id):
         })
     else:
         Vote.objects.update_or_create(user = user, question=question, defaults={'choice': selected_choice})
-        for choice in question.choice_set.all():
-            choice.votes = Vote.objects.filter(question=question).filter(choice=choice).count()
-            choice.save()
+        
         loggings.info(f"{user.username} is voting in question id {question_id}, {user.username}'s IP address is {get_client_ip(request)}")    
 
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
